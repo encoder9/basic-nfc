@@ -1,0 +1,10 @@
+{
+	"name": "BasicNFC",
+	"ios": {
+		"src": "ios/Sources/BasicNFCPlugin",
+		"swift": "BasicNFCPlugin.swift"
+	},
+	"android": {
+		"src": "android"
+	}
+}

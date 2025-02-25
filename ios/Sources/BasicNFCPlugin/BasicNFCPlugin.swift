@@ -5,7 +5,7 @@ import CoreNFC
 public class BasicNFCPlugin: CAPPlugin, NFCNDEFReaderSessionDelegate {
 	private var nfcSession: NFCNDEFReaderSession?
 	private var currentCall: CAPPluginCall?
-	private let timeout: TimeInterval = 5.0 // 5 seconds timeout
+	private let timeout: TimeInterval = 5.0
 	
 	@objc func echo(_ call: CAPPluginCall) {
 		guard let value = call.getString("value") else {
@@ -33,7 +33,6 @@ public class BasicNFCPlugin: CAPPlugin, NFCNDEFReaderSessionDelegate {
 		nfcSession?.alertMessage = "Hold your iPhone near an NFC tag to write data."
 		nfcSession?.begin()
 		
-		// Timeout handling
 		DispatchQueue.main.asyncAfter(deadline: .now() + timeout) { [weak self] in
 			if let session = self?.nfcSession, session.isReady {
 				session.invalidate(errorMessage: "Timeout: No NFC tag detected")
@@ -48,7 +47,6 @@ public class BasicNFCPlugin: CAPPlugin, NFCNDEFReaderSessionDelegate {
 		
 		guard NFCNDEFReaderSession.readingAvailable else {
 			if !simulatePayload.isEmpty {
-				// Simulate NFC scan
 				let result = self.simulateNFCScan(payload: simulatePayload)
 				call.resolve(result)
 			} else {
@@ -62,7 +60,6 @@ public class BasicNFCPlugin: CAPPlugin, NFCNDEFReaderSessionDelegate {
 		nfcSession?.alertMessage = "Hold your iPhone near an NFC tag to scan."
 		nfcSession?.begin()
 		
-		// Timeout handling
 		DispatchQueue.main.asyncAfter(deadline: .now() + timeout) { [weak self] in
 			if let session = self?.nfcSession, session.isReady {
 				if !simulatePayload.isEmpty {
@@ -86,35 +83,36 @@ public class BasicNFCPlugin: CAPPlugin, NFCNDEFReaderSessionDelegate {
 		}
 	}
 	
-	public func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFMessages messages: [NFCNDEFMessage]) {
+	public func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) {
 		guard let call = currentCall else { return }
 		
 		if call.callbackId == "writeNFC" {
-			// Writing operation
 			guard let message = call.getString("message"),
 				let ndefMessage = createNDEFMessage(from: message) else {
 				call.reject("Invalid message format")
 				return
 			}
 			
-			session.connect(to: messages[0].records[0].tag!) { error in
-				if let error = error {
-					call.reject("Failed to connect to tag: \(error.localizedDescription)")
-					return
-				}
-				
-				let tag = messages[0].records[0].tag as! NFCNDEFTag
-				tag.writeNDEF(ndefMessage) { error in
+			if let tag = messages.first?.records.first?.tag as? NFCNDEFTag {
+				session.connect(to: tag) { error in
 					if let error = error {
-						call.reject("Failed to write to tag: \(error.localizedDescription)")
-					} else {
-						call.resolve(["result": "Data written to NFC tag"])
+						call.reject("Failed to connect to tag: \(error.localizedDescription)")
+						return
 					}
-					self.currentCall = nil
+					
+					tag.writeNDEF(ndefMessage) { error in
+						if let error = error {
+							call.reject("Failed to write to tag: \(error.localizedDescription)")
+						} else {
+							call.resolve(["result": "Data written to NFC tag"])
+						}
+						self.currentCall = nil
+					}
 				}
+			} else {
+				call.reject("No NFC tag detected or tag is not NDEF compatible")
 			}
 		} else {
-			// Scanning operation
 			let result = convertNDEFMessagesToJSON(messages: messages)
 			call.resolve(result)
 			currentCall = nil
@@ -125,8 +123,9 @@ public class BasicNFCPlugin: CAPPlugin, NFCNDEFReaderSessionDelegate {
 	
 	private func createNDEFMessage(from text: String) -> NFCNDEFMessage? {
 		guard let textRecord = NFCNDEFRecord(payload: text.data(using: .utf8) ?? Data(),
-										typeNameFormat: .nfcWellKnown,
-										type: "T".data(using: .utf8) ?? Data()) else {
+										typeNameFormat: NFCTypeNameFormat.nfcWellKnown,
+										type: "T".data(using: .utf8) ?? Data(),
+										identifier: Data()) else {
 			return nil
 		}
 		return NFCNDEFMessage(records: [textRecord])
@@ -155,8 +154,9 @@ public class BasicNFCPlugin: CAPPlugin, NFCNDEFReaderSessionDelegate {
 	
 	private func simulateNFCScan(payload: String) -> [String: Any] {
 		guard let textRecord = NFCNDEFRecord(payload: payload.data(using: .utf8) ?? Data(),
-										typeNameFormat: .nfcWellKnown,
-										type: "T".data(using: .utf8) ?? Data()),
+										typeNameFormat: NFCTypeNameFormat.nfcWellKnown,
+										type: "T".data(using: .utf8) ?? Data(),
+										identifier: Data()),
 			let fakeMessage = NFCNDEFMessage(records: [textRecord]) else {
 			return [:]
 		}

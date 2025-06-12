@@ -57,7 +57,7 @@ public class BasicNFCPlugin extends Plugin {
 			}
 			
 			JSObject ret = new JSObject();
-			ret.put("records", recordsArray.toString());
+			ret.put("messages", recordsArray);
 			ret.put("tagID", tagID);
 			
 			// Notify listeners with the JSON data
@@ -267,7 +267,7 @@ public class BasicNFCPlugin extends Plugin {
 		}
 	}
 	
-	private String convertNdefMessageToJson(NdefMessage ndefMessage) {
+	private JSONArray convertNdefMessageToJson(NdefMessage ndefMessage) {
 		JSONArray recordsArray = new JSONArray();
 		
 		for (NdefRecord record : ndefMessage.getRecords()) {
@@ -283,6 +283,6 @@ public class BasicNFCPlugin extends Plugin {
 			}
 		}
 		
-		return recordsArray.toString();
+		return recordsArray;
 	}
 }

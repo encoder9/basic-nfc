@@ -14,6 +14,8 @@ npx cap sync
 <docgen-index>
 
 * [`echo(...)`](#echo)
+* [`writeNFC(...)`](#writenfc)
+* [`scanNFC(...)`](#scannfc)
 
 </docgen-index>
 
@@ -31,6 +33,36 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 | **`options`** | <code>{ value: string; }</code> |
 
 **Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+
+--------------------
+
+
+### writeNFC(...)
+
+```typescript
+writeNFC(options: { message: string; }) => Promise<{ result: string; }>
+```
+
+| Param         | Type                              |
+| ------------- | --------------------------------- |
+| **`options`** | <code>{ message: string; }</code> |
+
+**Returns:** <code>Promise&lt;{ result: string; }&gt;</code>
+
+--------------------
+
+
+### scanNFC(...)
+
+```typescript
+scanNFC(simulatePayload?: string | undefined) => Promise<{ message: string; }>
+```
+
+| Param                 | Type                |
+| --------------------- | ------------------- |
+| **`simulatePayload`** | <code>string</code> |
+
+**Returns:** <code>Promise&lt;{ message: string; }&gt;</code>
 
 --------------------
 

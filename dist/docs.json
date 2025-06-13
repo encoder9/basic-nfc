@@ -1,0 +1,63 @@
+{
+  "api": {
+    "name": "BasicNFCPlugin",
+    "slug": "basicnfcplugin",
+    "docs": "",
+    "tags": [],
+    "methods": [
+      {
+        "name": "echo",
+        "signature": "(options: { value: string; }) => Promise<{ value: string; }>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ value: string; }"
+          }
+        ],
+        "returns": "Promise<{ value: string; }>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "echo"
+      },
+      {
+        "name": "writeNFC",
+        "signature": "(options: { message: string; }) => Promise<{ result: string; }>",
+        "parameters": [
+          {
+            "name": "options",
+            "docs": "",
+            "type": "{ message: string; }"
+          }
+        ],
+        "returns": "Promise<{ result: string; }>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "writenfc"
+      },
+      {
+        "name": "scanNFC",
+        "signature": "(simulatePayload?: string | undefined) => Promise<{ message: string; }>",
+        "parameters": [
+          {
+            "name": "simulatePayload",
+            "docs": "",
+            "type": "string | undefined"
+          }
+        ],
+        "returns": "Promise<{ message: string; }>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "scannfc"
+      }
+    ],
+    "properties": []
+  },
+  "interfaces": [],
+  "enums": [],
+  "typeAliases": [],
+  "pluginConfigs": []
+}

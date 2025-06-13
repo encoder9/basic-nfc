@@ -1,0 +1,1 @@
+{"version":3,"file":"definitions.js","sourceRoot":"","sources":["../../src/definitions.ts"],"names":[],"mappings":"","sourcesContent":["export interface BasicNFCPlugin {\n\techo(options: { value: string }): Promise<{ value: string }>;\n\twriteNFC(options: { message: string }): Promise<{ result: string }>;\n\tscanNFC(simulatePayload?: string): Promise<{ message: string }>;\n}\n"]}

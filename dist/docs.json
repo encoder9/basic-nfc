@@ -23,7 +23,7 @@
       },
       {
         "name": "writeNFC",
-        "signature": "(options: { message: string; }) => Promise<{ result: string; }>",
+        "signature": "(options: { message: string; }) => Promise<WriteNFCResult>",
         "parameters": [
           {
             "name": "options",
@@ -31,15 +31,17 @@
             "type": "{ message: string; }"
           }
         ],
-        "returns": "Promise<{ result: string; }>",
+        "returns": "Promise<WriteNFCResult>",
         "tags": [],
         "docs": "",
-        "complexTypes": [],
+        "complexTypes": [
+          "WriteNFCResult"
+        ],
         "slug": "writenfc"
       },
       {
         "name": "scanNFC",
-        "signature": "(simulatePayload?: string | undefined) => Promise<{ message: string; }>",
+        "signature": "(simulatePayload?: string | undefined) => Promise<ScanNFCResult>",
         "parameters": [
           {
             "name": "simulatePayload",
@@ -47,16 +49,97 @@
             "type": "string | undefined"
           }
         ],
-        "returns": "Promise<{ message: string; }>",
+        "returns": "Promise<ScanNFCResult>",
         "tags": [],
         "docs": "",
-        "complexTypes": [],
+        "complexTypes": [
+          "ScanNFCResult"
+        ],
         "slug": "scannfc"
       }
     ],
     "properties": []
   },
-  "interfaces": [],
+  "interfaces": [
+    {
+      "name": "WriteNFCResult",
+      "slug": "writenfcresult",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "result",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "ScanNFCResult",
+      "slug": "scannfcresult",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "messages",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [
+            "NFCRecord"
+          ],
+          "type": "NFCRecord[]"
+        },
+        {
+          "name": "tagID",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "NFCRecord",
+      "slug": "nfcrecord",
+      "docs": "",
+      "tags": [],
+      "methods": [],
+      "properties": [
+        {
+          "name": "tnf",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "number"
+        },
+        {
+          "name": "type",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "id",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        },
+        {
+          "name": "payload",
+          "tags": [],
+          "docs": "",
+          "complexTypes": [],
+          "type": "string"
+        }
+      ]
+    }
+  ],
   "enums": [],
   "typeAliases": [],
   "pluginConfigs": []

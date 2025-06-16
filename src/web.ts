@@ -1,6 +1,6 @@
 import { WebPlugin } from '@capacitor/core';
 
-import type { BasicNFCPlugin } from './definitions';
+import type { BasicNFCPlugin, ScanNFCResult } from './definitions';
 
 export class BasicNFCWeb extends WebPlugin implements BasicNFCPlugin {
 	async echo(options: { value: string }): Promise<{ value: string }> {
@@ -13,8 +13,11 @@ export class BasicNFCWeb extends WebPlugin implements BasicNFCPlugin {
 		return { result: 'NFC writing is not supported in web environment' };
 	}
 	
-	async scanNFC(simulatePayload?: string): Promise<{ message: string }> {
+	async scanNFC(simulatePayload?: string): Promise<ScanNFCResult> {
 		console.warn('NFC is not supported in web environment', simulatePayload);
-		return { message: 'NFC is not supported in web environment' };
+		return {
+			messages: [],
+			tagID: '',
+		};
 	}
 }

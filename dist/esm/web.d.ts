@@ -1,5 +1,5 @@
 import { WebPlugin } from '@capacitor/core';
-import type { BasicNFCPlugin } from './definitions';
+import type { BasicNFCPlugin, ScanNFCResult } from './definitions';
 export declare class BasicNFCWeb extends WebPlugin implements BasicNFCPlugin {
     echo(options: {
         value: string;
@@ -11,7 +11,5 @@ export declare class BasicNFCWeb extends WebPlugin implements BasicNFCPlugin {
     }): Promise<{
         result: string;
     }>;
-    scanNFC(simulatePayload?: string): Promise<{
-        message: string;
-    }>;
+    scanNFC(simulatePayload?: string): Promise<ScanNFCResult>;
 }

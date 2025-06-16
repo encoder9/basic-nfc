@@ -16,6 +16,7 @@ npx cap sync
 * [`echo(...)`](#echo)
 * [`writeNFC(...)`](#writenfc)
 * [`scanNFC(...)`](#scannfc)
+* [Interfaces](#interfaces)
 
 </docgen-index>
 
@@ -40,14 +41,14 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 ### writeNFC(...)
 
 ```typescript
-writeNFC(options: { message: string; }) => Promise<{ result: string; }>
+writeNFC(options: { message: string; }) => Promise<WriteNFCResult>
 ```
 
 | Param         | Type                              |
 | ------------- | --------------------------------- |
 | **`options`** | <code>{ message: string; }</code> |
 
-**Returns:** <code>Promise&lt;{ result: string; }&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#writenfcresult">WriteNFCResult</a>&gt;</code>
 
 --------------------
 
@@ -55,15 +56,43 @@ writeNFC(options: { message: string; }) => Promise<{ result: string; }>
 ### scanNFC(...)
 
 ```typescript
-scanNFC(simulatePayload?: string | undefined) => Promise<{ message: string; }>
+scanNFC(simulatePayload?: string | undefined) => Promise<ScanNFCResult>
 ```
 
 | Param                 | Type                |
 | --------------------- | ------------------- |
 | **`simulatePayload`** | <code>string</code> |
 
-**Returns:** <code>Promise&lt;{ message: string; }&gt;</code>
+**Returns:** <code>Promise&lt;<a href="#scannfcresult">ScanNFCResult</a>&gt;</code>
 
 --------------------
+
+
+### Interfaces
+
+
+#### WriteNFCResult
+
+| Prop         | Type                |
+| ------------ | ------------------- |
+| **`result`** | <code>string</code> |
+
+
+#### ScanNFCResult
+
+| Prop           | Type                     |
+| -------------- | ------------------------ |
+| **`messages`** | <code>NFCRecord[]</code> |
+| **`tagID`**    | <code>string</code>      |
+
+
+#### NFCRecord
+
+| Prop          | Type                |
+| ------------- | ------------------- |
+| **`tnf`**     | <code>number</code> |
+| **`type`**    | <code>string</code> |
+| **`id`**      | <code>string</code> |
+| **`payload`** | <code>string</code> |
 
 </docgen-api>

@@ -17,7 +17,10 @@ class BasicNFCWeb extends core.WebPlugin {
     }
     async scanNFC(simulatePayload) {
         console.warn('NFC is not supported in web environment', simulatePayload);
-        return { message: 'NFC is not supported in web environment' };
+        return {
+            messages: [],
+            tagID: '',
+        };
     }
 }
 
